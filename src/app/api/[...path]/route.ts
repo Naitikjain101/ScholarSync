@@ -557,12 +557,11 @@ async function handler(request: Request, context: Context) {
         { error: "Invalid request data." },
         { status: 400 },
       );
-    console.error(
-      "ScholarSync request failed:",
-      error instanceof Error ? error.message : "unknown",
-    );
+    const msg = error instanceof Error ? error.message : String(error);
+    const stack = error instanceof Error ? error.stack : undefined;
+    console.error("ScholarSync request failed:", msg, stack);
     return NextResponse.json(
-      { error: "The request could not be completed. Please try again." },
+      { error: `Server error: ${msg}` },
       { status: 500 },
     );
   }
