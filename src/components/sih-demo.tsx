@@ -196,6 +196,7 @@ export function SIHDemoController() {
   }
 
   return (
+    <>
       {/* ── Demo controller panel ── */}
       <div
         className="sih-demo-overlay"
@@ -420,7 +421,8 @@ export function SIHDemoController() {
           </div>
         </div>
       </div>
-    );
+    </>
+  );
 }
 
 /* ─── Landing page button ───────────────────────────────── */
