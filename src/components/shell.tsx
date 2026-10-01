@@ -161,7 +161,13 @@ export function Shell({
                 <Link
                   key={n.href}
                   href={n.href}
-                  onClick={() => setMenu(false)}
+                  onClick={(e) => {
+                    setMenu(false);
+                    if (n.href === "#jago") {
+                      e.preventDefault();
+                      window.dispatchEvent(new CustomEvent("open-jago"));
+                    }
+                  }}
                   className={
                     pathname === n.href ||
                     (n.href !== "/workspace" &&

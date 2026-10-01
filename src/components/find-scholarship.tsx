@@ -9,17 +9,19 @@ import { Button, PageTitle } from "./ui";
 import { ArrowLeft, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { api } from "./providers";
 
+import type { FormData } from "@/lib/domain";
+
 export function FindScholarship({ schemes }: { schemes: SchemeView[] }) {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [data, setData] = useState<any>({
+  const [data, setData] = useState<FormData>({
     category: "Scheduled Tribe",
     familyIncome: 250000,
     academicScore: 60,
   });
   const [busy, setBusy] = useState("");
 
-  const update = (key: string, value: any) => setData((prev: any) => ({ ...prev, [key]: value }));
+  const update = (key: string, value: string | number | boolean) => setData((prev) => ({ ...prev, [key]: value }));
 
   const next = () => setStep(s => s + 1);
   const back = () => setStep(s => s - 1);
@@ -49,7 +51,7 @@ export function FindScholarship({ schemes }: { schemes: SchemeView[] }) {
                 </div>
                 
                 <div className="rule-list" style={{marginBottom: 20}}>
-                  {result.results.slice(0, 3).map((r: any) => (
+                  {result.results.slice(0, 3).map((r: { id: string; passed: boolean; label: string }) => (
                     <div className={`rule-result ${r.passed ? "" : "failed"}`} key={r.id}>
                       {r.passed ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
                       <span style={{fontSize: 11}}>{r.label}</span>
@@ -97,7 +99,7 @@ export function FindScholarship({ schemes }: { schemes: SchemeView[] }) {
               <h3>Education Level</h3>
               <label>
                 Current or planned education level
-                <select value={data.course || ""} onChange={e => update('course', e.target.value)}>
+                <select value={String(data.course || "")} onChange={e => update('course', e.target.value)}>
                   <option value="">Select level...</option>
                   <option value="School (Classes IX-X)">School (Classes IX-X)</option>
                   <option value="Higher Secondary (Classes XI-XII)">Higher Secondary (Classes XI-XII)</option>
@@ -122,7 +124,7 @@ export function FindScholarship({ schemes }: { schemes: SchemeView[] }) {
               <h3>Category & Income</h3>
               <label>
                 Applicant Category
-                <select value={data.category || ""} onChange={e => update('category', e.target.value)}>
+                <select value={String(data.category || "")} onChange={e => update('category', e.target.value)}>
                   <option value="Scheduled Tribe">Scheduled Tribe (ST)</option>
                   <option value="PVTG">Particularly Vulnerable Tribal Group (PVTG)</option>
                   <option value="General">General / Other</option>
@@ -130,7 +132,7 @@ export function FindScholarship({ schemes }: { schemes: SchemeView[] }) {
               </label>
               <label>
                 Annual Family Income (₹)
-                <input type="number" value={data.familyIncome || ""} onChange={e => update('familyIncome', Number(e.target.value))} />
+                <input type="number" value={String(data.familyIncome ?? "")} onChange={e => update('familyIncome', Number(e.target.value))} />
               </label>
               <p className="small-text muted">This helps match you with schemes that have income thresholds (e.g. ₹2.5L or ₹8.0L).</p>
             </>
@@ -141,11 +143,11 @@ export function FindScholarship({ schemes }: { schemes: SchemeView[] }) {
               <h3>Academic Performance</h3>
               <label>
                 Previous Academic Score (%)
-                <input type="number" value={data.academicScore || ""} onChange={e => update('academicScore', Number(e.target.value))} />
+                <input type="number" value={String(data.academicScore ?? "")} onChange={e => update('academicScore', Number(e.target.value))} />
               </label>
               <label>
                 Institution / Admission Status
-                <select value={data.offerStatus || ""} onChange={e => update('offerStatus', e.target.value)}>
+                <select value={String(data.offerStatus || "")} onChange={e => update('offerStatus', e.target.value)}>
                   <option value="Not admitted yet">Not admitted yet</option>
                   <option value="Admitted to general institution">Admitted to general institution</option>
                   <option value="Admitted to Premier Institution">Admitted to Premier Institution</option>

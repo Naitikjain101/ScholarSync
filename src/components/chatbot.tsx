@@ -1,7 +1,7 @@
 "use client";
 import { Localize } from "@/components/localize";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MessageCircle, Send, X, Sparkles } from "lucide-react";
 import { api, useApp } from "./providers";
@@ -15,6 +15,21 @@ export function Chatbot({ actor }: { actor?: Actor }) {
   const [messages, setMessages] = useState<
     { role: string; text: string; href?: string }[]
   >([]);
+
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === "#jago") {
+        setOpen(true);
+      }
+    };
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    window.addEventListener("open-jago", () => setOpen(true));
+    return () => {
+      window.removeEventListener("hashchange", handleHash);
+      window.removeEventListener("open-jago", () => setOpen(true));
+    };
+  }, []);
   async function send(question: string) {
     if (!question.trim() || busy) return;
     setMessages((m) => [...m, { role: "user", text: question }]);

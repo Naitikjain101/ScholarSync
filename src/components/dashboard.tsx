@@ -3,27 +3,15 @@ import { Localize } from "@/components/localize";
 
 import Link from "next/link";
 import {
-  ArrowRight,
-  ArrowUpRight,
-  Bell,
   CheckCircle2,
-  Circle,
-  FileText,
   AlertCircle,
   Check,
   ShieldAlert,
-  GraduationCap,
-  Sparkles,
-  WalletCards,
-  ChartNoAxesCombined,
-  ShieldCheck,
   Users,
-  TriangleAlert
+  TriangleAlert,
 } from "lucide-react";
 import type { DashboardData } from "@/server/queries";
 import type { Actor } from "@/lib/domain";
-import { money, dateLabel } from "@/lib/domain";
-import { PageTitle, Metric, Panel } from "./ui";
 import { ApplicationTable } from "./application-table";
 import { useApp } from "./providers";
 
@@ -38,17 +26,17 @@ export function Dashboard({
   const student = actor.role === "student";
 
   if (student) {
-    return <StudentDashboard data={data} actor={actor} t={t} />;
+    return <StudentDashboard data={data} actor={actor} t={(key: string) => t(key)} />;
   }
   
   if (actor.role === "ministry_admin" || actor.role === "scheme_admin") {
-     return <MinistryDashboard data={data} actor={actor} t={t} />;
+     return <MinistryDashboard data={data} actor={actor} t={(key: string) => t(key)} />;
   }
 
-  return <OfficerDashboard data={data} actor={actor} t={t} />;
+  return <OfficerDashboard data={data} actor={actor} t={(key: string) => t(key)} />;
 }
 
-function StudentDashboard({ data, actor, t }: { data: DashboardData, actor: Actor, t: any }) {
+function StudentDashboard({ data, actor, t }: { data: DashboardData, actor: Actor, t: (key: string) => string }) {
   const app = data.recent.rows[0];
   
   return (
@@ -211,7 +199,7 @@ function StudentDashboard({ data, actor, t }: { data: DashboardData, actor: Acto
   );
 }
 
-function SchemeOptionCard({ name, desc, active, conflict, unavailable, action }: any) {
+function SchemeOptionCard({ name, desc, active, conflict, unavailable, action }: { name: string; desc: string; active?: boolean; conflict?: boolean; unavailable?: string; action?: string; status?: string }) {
   return (
     <div style={{ background: 'white', border: `1px solid ${conflict ? 'var(--warning)' : active ? 'var(--accent)' : 'var(--border)'}`, borderLeft: active ? '3px solid var(--accent)' : conflict ? '3px solid var(--warning)' : '1px solid var(--border)', borderRadius: 14, padding: '20px 24px', display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', alignItems: 'center', opacity: unavailable ? 0.65 : 1 }}>
       <div style={{ flex: '1 1 280px' }}>
@@ -259,19 +247,7 @@ function TimelineNode({ num, title, state, date, desc }: { num: string, title: s
   );
 }
 
-function TimelineStep({ label, active, done }: { label: string, active: boolean, done: boolean }) {
-  return (
-    <div className={`tl-step ${active ? 'active' : ''} ${done ? 'done' : ''}`}>
-      <div className="tl-icon">
-        {done ? <Check size={14} /> : active ? <Circle size={10} fill="currentColor" /> : <Circle size={14} />}
-      </div>
-      <span className="tl-label">{label}</span>
-      <div className="tl-line" />
-    </div>
-  );
-}
-
-function OfficerDashboard({ data, actor, t }: { data: DashboardData, actor: Actor, t: any }) {
+function OfficerDashboard({ data, actor, t }: { data: DashboardData, actor: Actor, t: (key: string) => string }) {
   const review = data.byStatus.filter(s => ['ready_for_review', 'under_scrutiny'].includes(s.status)).reduce((n, s) => n + s.count, 0);
   return (
     <Localize>
@@ -311,7 +287,7 @@ function OfficerDashboard({ data, actor, t }: { data: DashboardData, actor: Acto
   );
 }
 
-function MinistryDashboard({ data, actor, t }: { data: DashboardData, actor: Actor, t: any }) {
+function MinistryDashboard({ data, actor, t }: { data: DashboardData, actor: Actor, t: (key: string) => string }) {
   return (
     <Localize>
       <div className="editorial-dashboard">

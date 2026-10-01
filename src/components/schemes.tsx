@@ -120,7 +120,7 @@ export function Schemes({
           inspired by MoTA scholarship programmes (Pre-Matric, Post-Matric, Top
           Class, NFST, NOS). All eligibility criteria, award amounts, quotas
           and deadlines shown are demonstration data — not current official
-          government rules. <a href="/about/responsible-ai" className="text-button" style={{display:"inline"}}>Learn more</a>
+          government rules. <Link href="/about/responsible-ai" className="text-button" style={{display:"inline"}}>Learn more</Link>
         </Notice>
 
         {/* Student scholarship journey CTA */}
