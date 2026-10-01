@@ -21,11 +21,17 @@ export async function getDb(): Promise<DB> {
 }
 async function connect(): Promise<DB> {
   if (process.env.DATABASE_URL) {
+    // Supabase and most hosted Postgres require SSL; rejectUnauthorized allows
+    // self-signed certs used by Supabase's connection pooler.
+    const ssl = process.env.DATABASE_URL.includes("localhost")
+      ? undefined
+      : { rejectUnauthorized: false };
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL,
       max: 5,
       idleTimeoutMillis: 15000,
       connectionTimeoutMillis: 10000,
+      ssl,
     });
     if (process.env.VERCEL && process.env.DATABASE_URL?.includes("vercel")) {
       const { attachDatabasePool } = await import("@vercel/functions");
