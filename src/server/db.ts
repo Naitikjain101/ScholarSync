@@ -60,8 +60,4 @@ export async function closeDb() {
   await globalDb.scholarsyncClose?.();
   globalDb.scholarsyncDb = undefined;
 }
-export const demoEnabled = () =>
-  process.env.DEMO_MODE === "true" ||
-  (!process.env.DATABASE_URL &&
-    !process.env.VERCEL &&
-    process.env.DEMO_MODE !== "false");
+export const demoEnabled = () => process.env.DEMO_MODE !== "false";
