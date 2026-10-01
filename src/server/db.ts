@@ -27,7 +27,7 @@ async function connect(): Promise<DB> {
       idleTimeoutMillis: 15000,
       connectionTimeoutMillis: 10000,
     });
-    if (process.env.VERCEL) {
+    if (process.env.VERCEL && process.env.DATABASE_URL?.includes("vercel")) {
       const { attachDatabasePool } = await import("@vercel/functions");
       attachDatabasePool(pool);
     }

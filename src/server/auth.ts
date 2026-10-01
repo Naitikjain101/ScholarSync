@@ -96,17 +96,17 @@ export async function rateLimit(key: string, limit = 30, windowMs = 60000) {
 }
 export function checkOrigin(request: Request) {
   const origin = request.headers.get("origin");
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
   const requestUrl = new URL(request.url);
   const allowed = new Set([requestUrl.origin]);
   if (process.env.APP_URL) allowed.add(new URL(process.env.APP_URL).origin);
-  // Next's local request URL can use localhost even when the browser uses 127.0.0.1.
-  const host = request.headers.get("host");
-  if (
-    host &&
-    /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host) &&
-    ["localhost", "127.0.0.1"].includes(requestUrl.hostname)
-  )
-    allowed.add(`${requestUrl.protocol}//${host}`);
-  if (!origin || !allowed.has(origin))
+  if (host) allowed.add(`https://${host}`);
+  if (host && /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host)) {
+    allowed.add(`http://${host}`);
+  }
+  if (!origin || !allowed.has(origin)) {
+    // Check if it's a vercel deployment domain as fallback
+    if (origin?.endsWith(".vercel.app") || origin?.endsWith(".vercel.app/")) return;
     throw new AppError("This request origin is not permitted.", 403);
+  }
 }
