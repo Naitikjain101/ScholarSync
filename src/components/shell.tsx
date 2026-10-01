@@ -267,7 +267,7 @@ export function Shell({
               </button>
               <div className="page-context">
                 <span className="breadcrumb">ScholarSync <span className="divider">/</span> {pathname.split('/')[1] || 'workspace'}</span>
-                <span className="page-title">{pathname === '/workspace' || pathname === '/' ? 'Dashboard' : pathname.split('/')[1].charAt(0).toUpperCase() + pathname.split('/')[1].slice(1)}</span>
+                <span className="topbar-title">{pathname === '/workspace' || pathname === '/' ? 'Dashboard' : pathname.split('/')[1].charAt(0).toUpperCase() + pathname.split('/')[1].slice(1)}</span>
               </div>
             </div>
             <div className="topbar-actions">

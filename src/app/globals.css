@@ -626,7 +626,7 @@ details p {
   margin: 0 4px;
   color: #D1D5DB;
 }
-.page-title {
+.topbar-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--foreground);
