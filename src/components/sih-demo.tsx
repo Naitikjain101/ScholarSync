@@ -159,8 +159,8 @@ export function SIHDemoController() {
       }
       sessionStorage.setItem("sih_demo_step", String(targetIndex));
       setStepIndex(targetIndex);
-      router.push(target.route);
       router.refresh();
+      router.push(target.route);
     } finally {
       setBusy(false);
     }

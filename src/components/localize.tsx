@@ -14,9 +14,11 @@ import { useApp } from "./providers";
  * Use translate="no" for free-form evidence, names, messages and source documents.
  */
 export function Localize({ children }: { children: ReactNode }) {
-  const { t } = useApp();
+  const { t, language } = useApp();
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
+  
+  if (language === "en") return <>{children}</>;
   function visit(node: ReactNode): ReactNode {
     if (typeof node === "string") return t(node);
     if (Array.isArray(node)) return Children.map(node, visit);

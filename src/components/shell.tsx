@@ -124,8 +124,8 @@ export function Shell({
     setSwitching(true);
     try {
       await api("auth/demo", { role });
-      router.push("/workspace");
       router.refresh();
+      router.push("/workspace");
     } catch (e) {
       notice((e as Error).message, true);
     } finally {
@@ -222,8 +222,8 @@ export function Shell({
               className="signout"
               onClick={async () => {
                 await api("auth/logout");
-                router.push("/");
                 router.refresh();
+                router.push("/");
               }}
             >
               <LogOut size={15} />

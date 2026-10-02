@@ -57,8 +57,8 @@ export function DemoRoles() {
               setBusy(r.role);
               try {
                 await api("auth/demo", { role: r.role as Role });
-                router.push("/workspace");
                 router.refresh();
+                router.push("/workspace");
               } catch (error) {
                 notice((error as Error).message, true);
                 setBusy("");

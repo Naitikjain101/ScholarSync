@@ -51,8 +51,8 @@ export function AuthForm({
                     }
                   : {}),
               });
-              router.push("/workspace");
               router.refresh();
+              router.push("/workspace");
             } catch (err) {
               setError((err as Error).message);
             } finally {
