@@ -12,7 +12,10 @@ async function main() {
   const connectionString =
     process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
   if (connectionString) {
-    const pool = new Pool({ connectionString });
+    const ssl = connectionString.includes("localhost")
+      ? undefined
+      : { rejectUnauthorized: false };
+    const pool = new Pool({ connectionString, ssl });
     try {
       const db = drizzle(pool, { schema });
       await migrate(db, { migrationsFolder: "./drizzle" });
