@@ -9,11 +9,14 @@ import { seedDatabase } from "../src/server/seed";
 import { getDb, closeDb } from "../src/server/db";
 
 async function main() {
-  const connectionString =
+  let connectionString =
     process.env.DATABASE_URL_UNPOOLED ||
     process.env.POSTGRES_URL_NON_POOLING ||
     process.env.DATABASE_URL;
   if (connectionString) {
+    if (connectionString.includes("supabase.co:6543")) {
+      connectionString = connectionString.replace(":6543", ":5432");
+    }
     const ssl = connectionString.includes("localhost")
       ? undefined
       : { rejectUnauthorized: false };
@@ -39,5 +42,8 @@ async function main() {
 }
 main().catch((error) => {
   console.error(error.message);
+  if (error.cause) {
+    console.error("EXACT CAUSE:", error.cause);
+  }
   process.exitCode = 1;
 });
