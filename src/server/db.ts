@@ -29,7 +29,7 @@ async function connect(): Promise<DB> {
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL,
       max: 5,
-      idleTimeoutMillis: 15000,
+      idleTimeoutMillis: process.env.VERCEL ? 1 : 15000,
       connectionTimeoutMillis: 10000,
       ssl,
     });
