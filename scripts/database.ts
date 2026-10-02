@@ -10,7 +10,9 @@ import { getDb, closeDb } from "../src/server/db";
 
 async function main() {
   const connectionString =
-    process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+    process.env.DATABASE_URL_UNPOOLED ||
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.DATABASE_URL;
   if (connectionString) {
     const ssl = connectionString.includes("localhost")
       ? undefined
