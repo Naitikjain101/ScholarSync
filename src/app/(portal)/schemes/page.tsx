@@ -3,11 +3,16 @@ import { listSchemes } from "@/server/queries";
 import { Schemes } from "@/components/schemes";
 import { FindScholarship } from "@/components/find-scholarship";
 
-export default async function SchemePage({ searchParams }: { searchParams: { find?: string } }) {
+export default async function SchemePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ find?: string }>;
+}) {
   const actor = await pageActor();
   const schemes = await listSchemes();
-  
-  if (searchParams.find === "1") {
+  const params = await searchParams;
+
+  if (params.find === "1") {
     return <FindScholarship schemes={schemes} />;
   }
   

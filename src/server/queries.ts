@@ -169,11 +169,11 @@ export async function applicationDetail(actor: Actor, id: string) {
       ...app,
       duplicates:
         actor.role === "student"
-          ? app.duplicates.map((d) => ({
+          ? (app.duplicates || []).map((d) => ({
               ...d,
               applicationId: "Restricted to authorized reviewers",
             }))
-          : app.duplicates,
+          : (app.duplicates || []),
     },
     scheme,
     documents,
